@@ -1,6 +1,11 @@
 get-go
 ======
 
+Inspired and stolen from `get-pip.py` ?
+
+Usage
+-----
+
 Just run
 
 .. code::
