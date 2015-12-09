@@ -69,6 +69,7 @@ if grep -q "$(shasum go.tar.bz | awk '{print $1}')" dl.html; then
     tar -C $pre -xzf go.tar.bz
 else
     echo -e "SHA1 checksum fail"
+    exit 1
 fi
 
 # clear env
