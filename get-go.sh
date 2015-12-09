@@ -61,7 +61,7 @@ echo "Start installing go$version under $pre/ ..."
 curl https://golang.org/dl/ -o dl.html
 if [ "$version" == "0" ]; then
     # get version
-    version=$(grep -o "id=\"go[0-9]\.[0-9]\.[0-9]" dl.html | sed "s/id=\"go//g" | sort -r | sed -n "1p")
+    version=$(grep -o "id=\"go[0-9]\.[0-9]\.*[0-9]*" dl.html | sed "s/id=\"go//g" | sort -r | sed -n "1p")
 fi
 
 curl https://storage.googleapis.com/golang/go$version.$platform-amd64.tar.gz -o go.tar.bz
