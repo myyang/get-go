@@ -26,6 +26,7 @@ Following comes to options, use :code:`./get-go.sh -h` to look up
      -k keep download file
      -p input installed prefix, ex: /home/user/ (default: /usr/local/)
      -v installed go version (ex: 1.5.2)
+     -b enable automatically fetch beta version, default as False
      -h show this message
 
 

@@ -6,7 +6,7 @@ Usage:\n
    -k   keep download file\n
    -p   input installed prefix, ex: /home/user/ (default: /usr/local/)\n
    -v   installed go version (ex: 1.5.2)\n
-   -b   enable automatically fetch beta version, default as False
+   -b   enable automatically fetch beta version, default as False\n
    -h   show this message\n
 "
 
@@ -58,7 +58,7 @@ echo -e "\nOPTS:
 # check existing
 if [ -e $pre/go/ ]; then
     if [ "$force" == "0" ]; then
-        echo -e "Golang already exists under $pre/go ! Which is `$pre/go/bin/go version | grep -o "go[0-9]\.[0-9]\.*[0-9]*"`\nOverwrite existing with -f option, or install another with prefix -p PREFIX"
+        echo -e "Golang already exists under $pre/go ! Which is `$pre/go/bin/go version | grep -o "go[0-9]\.[0-9].*\s"`\nOverwrite existing with -f option, or install another with prefix -p PREFIX"
         exit 1
     fi
 fi
@@ -68,9 +68,9 @@ curl https://golang.org/dl/ -o dl.html
 if [ "$version" == "0" ]; then
     # get version
     if [ "$beta" == "1" ]; then
-        version=$(grep -o "id=\"go[0-9]\.[0-9].\"" dl.html | sed "s/id=\"go//g" | sort -r | sed -n "1p")
+        version=$(grep -o "id=\"go[0-9]\.[0-9].*\"" dl.html | sed "s/id=\"go//g" | sed "s/\"//g" | sort -r | sed -n "1p")
     else
-        version=$(grep -o "id=\"go[0-9]\.[0-9]\.*[0-9]*\"" dl.html | sed "s/id=\"go//g" | sort -r | sed -n "1p")
+        version=$(grep -o "id=\"go[0-9]\.[0-9]\.*[0-9]*\"" dl.html | sed "s/id=\"go//g" | sed "s/\"//g" | sort -r | sed -n "1p")
     fi
     echo "Automatically fetch latest version: $version"
 fi
