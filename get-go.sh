@@ -48,18 +48,20 @@ while getopts "fkhbp:v:" o; do
     esac
 done
 
-echo "OPTS: version=$version platfrom=$platform keep=$keep, pre=$pre, force=$force"
+echo -e "\nOPTS:
+    version=$version
+    platfrom=$platform
+    keep=$keep
+    pre=$pre
+    force=$force\n"
 
 # check existing
 if [ -e $pre/go/ ]; then
     if [ "$force" == "0" ]; then
-        echo -e "Found existing golang at $pre/go !\nOverwrite existing with -f option, or install another with prefix -p PREFIX"
+        echo -e "Golang already exists under $pre/go ! Which is `$pre/go/bin/go version | grep -o "go[0-9]\.[0-9]\.*[0-9]*"`\nOverwrite existing with -f option, or install another with prefix -p PREFIX"
         exit 1
     fi
 fi
-
-# start install
-echo "Start installing go$version under $pre/ ..."
 
 # download golang page and package
 curl https://golang.org/dl/ -o dl.html
@@ -72,6 +74,9 @@ if [ "$version" == "0" ]; then
     fi
     echo "Automatically fetch latest version: $version"
 fi
+
+# start install
+echo "Start installing go$version under $pre/ ..."
 
 curl https://storage.googleapis.com/golang/go$version.$platform-amd64.tar.gz -o go.tar.bz
 if grep -q "$(shasum go.tar.bz | awk '{print $1}')" dl.html; then
