@@ -6,6 +6,7 @@ Usage:\n
    -k   keep download file\n
    -p   input installed prefix, ex: /home/user/ (default: /usr/local/)\n
    -v   installed go version (ex: 1.5.2)\n
+   -b   enable automatically fetch beta version, default as False
    -h   show this message\n
 "
 
@@ -24,8 +25,9 @@ keep=0
 pre=/usr/local
 force=0
 version=0
+beta=0
 
-while getopts "fkhp:v:" o; do
+while getopts "fkhbp:v:" o; do
     case $o in
         f)      force=1
                 ;;
@@ -37,6 +39,8 @@ while getopts "fkhp:v:" o; do
                 ;;
         h)      echo -e $hm >&2
                 exit 1
+                ;;
+        b)      beta=1
                 ;;
         \?)     echo "invalid options -$OPTARG" >&2
                 exit 1
@@ -61,7 +65,12 @@ echo "Start installing go$version under $pre/ ..."
 curl https://golang.org/dl/ -o dl.html
 if [ "$version" == "0" ]; then
     # get version
-    version=$(grep -o "id=\"go[0-9]\.[0-9]\.*[0-9]*" dl.html | sed "s/id=\"go//g" | sort -r | sed -n "1p")
+    if [ "$beta" == "1" ]; then
+        version=$(grep -o "id=\"go[0-9]\.[0-9].\"" dl.html | sed "s/id=\"go//g" | sort -r | sed -n "1p")
+    else
+        version=$(grep -o "id=\"go[0-9]\.[0-9]\.*[0-9]*\"" dl.html | sed "s/id=\"go//g" | sort -r | sed -n "1p")
+    fi
+    echo "Automatically fetch latest version: $version"
 fi
 
 curl https://storage.googleapis.com/golang/go$version.$platform-amd64.tar.gz -o go.tar.bz
