@@ -68,7 +68,7 @@ if [ -e $pre/go/ ]; then
 fi
 
 # download golang page and package
-curl https://golang.org/dl/ -o dl.html
+curl -s https://golang.org/dl/ -o dl.html
 if [ "$version" == "0" ]; then
     # get version
     if [ "$beta" == "1" ]; then
@@ -79,10 +79,13 @@ if [ "$version" == "0" ]; then
     echo "Automatically fetch latest version: $version"
 fi
 
+echo "Downloading ..."
+
+curl -s https://storage.googleapis.com/golang/go$version.$platform-amd64.tar.gz -o go.tar.bz
+
 # start install
 echo "Start installing go$version under $pre/ ..."
 
-curl https://storage.googleapis.com/golang/go$version.$platform-amd64.tar.gz -o go.tar.bz
 if grep -q "$(shasum go.tar.bz | awk '{print $1}')" dl.html; then
     tar -C $pre -xzf go.tar.bz
 else
