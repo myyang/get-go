@@ -4,6 +4,7 @@ hm="\n
 Usage:\n
    -f   force install, overwrite previous executable\n
    -k   keep download file\n
+   -l   list avaiable versions\n
    -p   input installed prefix, ex: /home/user/ (default: /usr/local/)\n
    -v   installed go version (ex: 1.5.2)\n
    -b   enable automatically fetch beta version, default as False\n
@@ -27,7 +28,7 @@ force=0
 version=0
 beta=0
 
-while getopts "fkhbp:v:" o; do
+while getopts "fkhblp:v:" o; do
     case $o in
         f)      force=1
                 ;;
@@ -38,7 +39,10 @@ while getopts "fkhbp:v:" o; do
         v)      version=$OPTARG
                 ;;
         h)      echo -e $hm >&2
-                exit 1
+                exit 0
+                ;;
+        l)      curl -s https://golang.org/dl/ | grep -o "id=\"go[0-9]\.[0-9].*\"" | sed "s/id=\"go//g" | sed "s/\"//g" | sort -r
+                exit 0
                 ;;
         b)      beta=1
                 ;;
