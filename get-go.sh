@@ -52,13 +52,6 @@ while getopts "fkhblp:v:" o; do
     esac
 done
 
-echo -e "\nOPTS:
-    version=$version
-    platfrom=$platform
-    keep=$keep
-    pre=$pre
-    force=$force\n"
-
 # check existing
 if [ -e $pre/go/ ]; then
     if [ "$force" == "0" ]; then
