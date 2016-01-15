@@ -86,7 +86,7 @@ curl -s https://storage.googleapis.com/golang/go$version.$platform-amd64.tar.gz 
 # start install
 echo "Start installing go$version under $pre/ ..."
 
-if grep -q "$(shasum go.tar.bz | awk '{print $1}')" dl.html; then
+if grep -q "$(shasum -a 256 go.tar.bz | awk '{print $1}')" dl.html; then
     rm -rf $pre/go && tar -C $pre -xzf go.tar.bz
 else
     echo -e "SHA1 checksum fail"
