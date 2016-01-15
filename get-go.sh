@@ -52,6 +52,12 @@ while getopts "fkhblp:v:" o; do
     esac
 done
 
+function cleanenv(){
+    if [ "$keep" == "0" ];then
+        rm dl.html go.tar.bz
+    fi
+}
+
 # check existing
 if [ -e $pre/go/ ]; then
     if [ "$force" == "0" ]; then
@@ -81,16 +87,11 @@ echo "Start installing go$version under $pre/ ..."
 
 if grep -q "$(shasum -a 256 go.tar.bz | awk '{print $1}')" dl.html; then
     rm -rf $pre/go && tar -C $pre -xzf go.tar.bz
+    cleanenv
 else
     echo -e "SHA1 checksum fail"
-    rm dl.html go.tar.bz
+    cleanenv
     exit 1
-fi
-
-# clear env
-rm dl.html
-if [ "$keep" == "0" ];then
-    rm go.tar.bz
 fi
 
 # setup env
